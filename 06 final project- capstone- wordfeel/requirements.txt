@@ -1,0 +1,4 @@
+psycopg
+wiktionaryparser
+pandas
+bs4

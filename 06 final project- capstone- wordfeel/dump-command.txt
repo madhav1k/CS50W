@@ -1,0 +1,1 @@
+pg_dump -U postgres etymwn > /Users/Madhavik/Downloads/edX/02\ CS50W\ 2020/06\ final\ project-\ capstone-\ wordfeel/etymwn-dump.sql

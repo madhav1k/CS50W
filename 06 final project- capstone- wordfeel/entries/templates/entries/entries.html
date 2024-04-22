@@ -1,0 +1,22 @@
+{% extends "entries/layout.html" %}
+{% load static %}
+
+{% block title %}Entries | WordFeel{% endblock %}
+
+{% block head %}
+    <link href="{% static 'entries/styles.css' %}" rel="stylesheet">
+    <script src="{% static 'entries/scroll_entries.js' %}"></script>
+    <script src="{% static 'entries/search.js' %}"></script>
+{% endblock %}
+
+{% block entries_link %}active{% endblock %}
+
+{% block body %}
+    <p class="headtext">{{ num }} {{ entries }} from {{ lang }} {{ languages }}</p>
+{% endblock %}
+
+{% block loading %}
+    <div class="loading">
+        Loading...
+    </div>
+{% endblock %}

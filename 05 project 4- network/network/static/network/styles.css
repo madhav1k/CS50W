@@ -1,0 +1,51 @@
+.body {
+    margin: 0px 15px;
+}
+
+.heading {
+    margin: 10px 0px;
+}
+
+.container {
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    padding: 10px;
+    width: auto;
+    max-width: none;
+}
+
+.new-post {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+textarea {
+    width: 100%;
+    border-color: lightgray;
+    border-radius: 4px;
+}
+
+.all-posts {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.post {
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.content {
+    font-size: 14px;
+}
+
+.date {
+    font-size: 14px;
+}
+
+.edit {
+    font-size: 14px;
+}

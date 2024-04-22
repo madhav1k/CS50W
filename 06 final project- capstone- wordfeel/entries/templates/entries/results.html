@@ -1,0 +1,26 @@
+{% extends "entries/layout.html" %}
+{% load static %}
+
+{% block title %}Results | WordFeel{% endblock %}
+
+{% block head %}
+    <link href="{% static 'entries/styles.css' %}" rel="stylesheet">
+    <script src="{% static 'entries/search.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    {% if num == 0 %}
+        <p>{{ message }} for "{{ query }}"</p>
+    {% else %}
+        <p>{{ message }} for "{{ query }}"</p>
+        {% if exact.exists %}
+            {% for e in exact %}
+                <p><strong>{{ e.language }}</strong> <a href="{% url 'entry' entry_id=e.id %}">{{ e.entry }}</a>{% if e.latinized_name and e.latinized_name != e.entry %} <i>{{ e.latinized_name }}</i>{% endif %}</p>
+            {% endfor %}
+            <br>
+        {% endif %}
+        {% for result in results %}
+            <p><strong>{{ result.language }}</strong> <a href="{% url 'entry' entry_id=result.id %}">{{ result.entry }}</a>{% if result.latinized_name and result.latinized_name != result.entry %} <i>{{ result.latinized_name }}</i>{% endif %}</p>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

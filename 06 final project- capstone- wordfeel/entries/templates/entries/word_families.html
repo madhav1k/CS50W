@@ -1,0 +1,27 @@
+{% extends "entries/layout.html" %}
+{% load static %}
+
+{% block title %}Word Families | WordFeel{% endblock %}
+
+{% block head %}
+    <link href="{% static 'entries/styles.css' %}" rel="stylesheet">
+    <script src="{% static 'entries/search.js' %}"></script>
+{% endblock %}
+
+{% block word_families_link %}active{% endblock %}
+
+{% block body %}
+    <p class="headtext">{{ num }} featured {{ wfs }}</p>
+    {% if wordfamilies %}
+        <ol>
+            {% for wordfamily in wordfamilies %}
+                <li><strong>{{ wordfamily.pe.language }}</strong> <a href="{% url 'entry' entry_id=wordfamily.pe.id %}">{{ wordfamily.pe.entry }}</a>{% if wordfamily.pe.latinized_name and wordfamily.pe.latinized_name != wordfamily.pe.entry %} <i>({{ wordfamily.pe.latinized_name }})</i>{% endif %}</li>
+                    <ul>
+                        {% for fw in wordfamily.fws %}
+                            <li>{{ fw.language }}</strong> <a href="{% url 'entry' entry_id=fw.id %}">{{ fw.entry }}</a>{% if fw.latinized_name and fw.latinized_name != fw.entry %} <i>({{ fw.latinized_name }})</i>{% endif %}</li>
+                        {% endfor %}
+                    </ul>
+            {% endfor %}
+        </ol>
+    {% endif %}
+{% endblock %}

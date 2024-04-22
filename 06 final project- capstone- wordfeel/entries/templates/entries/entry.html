@@ -1,0 +1,140 @@
+{% extends "entries/layout.html" %}
+
+{% block title %} {{ entry }} | WordFeel{% endblock %}
+
+{% block body %}
+
+    <h1><strong>{{ language }}</strong> {{ entry }}{% if latinized and latinized != entry %} <i>({{ latinized }})</i>{% endif %}</h1>
+
+    <div class="row">
+        <div class="col">
+            {% if variantslen %}
+                {% if variantslen == 1 %}
+                    <h4>Variant:</h4>
+                {% else %}
+                    <h4>Variants:</h4>
+                {% endif %}
+                {% for variant in variants_orthographic %}
+                        <p><strong>{{ variant.language }}</strong> <a href="{% url 'entry' entry_id=variant.id %}">{{ variant.entry }}</a>{% if variant.latinized_name and variant.latinized_name != variant.entry %} ({{ variant.latinized_name }}){% endif %} (orthographic)</p>
+                {% endfor %}
+                {% for variant in variants_unorthographic %}
+                        <p><strong>{{ variant.language }}</strong> <a href="{% url 'entry' entry_id=variant.id %}">{{ variant.entry }}</a>{% if variant.latinized_name and variant.latinized_name != variant.entry %} ({{ variant.latinized_name }}){% endif %}</p>
+                {% endfor %}
+            {% endif %}
+            
+            {% if primeetymons %}
+                {% if primeetymonslen == 1 %}
+                    <h4>Prime Etymon:</h4>
+                {% else %}
+                    <h4>Prime Etymons:</h4>
+                {% endif %}
+                {% for primeetymon in primeetymons %}
+                        <p><strong>{{ primeetymon.language }}</strong> <a href="{% url 'entry' entry_id=primeetymon.id %}">{{ primeetymon.entry }}</a>{% if primeetymon.latinized_name and primeetymon.latinized_name != primeetymon.entry %} {{ primeetymon.latinized_name }}{% endif %}</p>
+                {% endfor %}
+            {% endif %}
+
+            {% if etymons %}
+                {% if etymonslen == 1 %}
+                    <h4>Etymon:</h4>
+                {% else %}
+                    <h4>Etymons:</h4>
+                {% endif %}
+                {% for etymon in etymons %}
+                        <p><strong>{{ etymon.language }}</strong> <a href="{% url 'entry' entry_id=etymon.id %}">{{ etymon.entry }}</a>{% if etymon.latinized_name and etymon.latinized_name != etymon.entry %} {{ etymon.latinized_name }}{% endif %}</p>
+                {% endfor %}
+            {% endif %}
+
+            {% if roots %}
+                {% if rootslen == 1 %}
+                    <h4>Root:</h4>
+                {% else %}
+                    <h4>Roots:</h4>
+                {% endif %}
+                {% for root in roots %}
+                    <p><strong>{{ root.language }}</strong> <a href="{% url 'entry' entry_id=root.id %}">{{ root.entry }}</a>{% if root.latinized_name and root.latinized_name != root.entry %} {{ root.latinized_name }}{% endif %}</p>
+                {% endfor %}
+            {% endif %} 
+
+            {% if relatedwords %}
+                {% if relatedwordslen == 1 %}
+                    <h4>Related Word:</h4>
+                {% else %}
+                    <h4>Related Words:</h4>
+                {% endif %}
+                {% for relatedword in relatedwords %}
+                        <p><strong>{{ relatedword.language }}</strong> <a href="{% url 'entry' entry_id=relatedword.id %}">{{ relatedword.entry }}</a>{% if relatedword.latinized_name and relatedword.latinized_name != relatedword.entry %} {{ relatedword.latinized_name }}{% endif %}</p>
+                {% endfor %}
+            {% endif %}
+
+            {% if wordfamilies %}
+                {% if primeetymonslen == 0 or primeetymonslen == 1 %}
+                    {% if familywordscount == 1 %}
+                        <h4>Family Word:</h4>
+                    {% elif familywordscount > 1 %}
+                        <h4>Family Words:</h4>
+                    {% endif %}
+                    {% for wordfamily in wordfamilies %}
+                        {% for fw in wordfamily.fws %}
+                                <p><strong>{{ fw.language }}</strong> <a href="{% url 'entry' entry_id=fw.id %}">{{ fw.entry }}</a>{% if fw.latinized_name and fw.latinized_name != fw.entry %} {{ fw.latinized_name }}{% endif %}</p>
+                        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    {% if familywordscount == 1 %}
+                        <h4>Family Word:</h4>
+                    {% elif familywordscount > 1 %}
+                        <h4>Family Words:</h4>
+                    {% endif %}
+                    <ul style="list-style-type: none">
+                        {% for wordfamily in wordfamilies %}
+                            {% if wordfamily.fws %}
+                                <li>{{ wordfamily.pe.entry }}:
+                                    <ul style="list-style-type: none"> 
+                                        {% for fw in wordfamily.fws %}
+                                            <li><strong>{{ fw.language }}</strong> <a href="{% url 'entry' entry_id=fw.id %}">{{ fw.entry }}</a>{% if fw.latinized_name and fw.latinized_name != fw.entry %} {{ fw.latinized_name }}{% endif %}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endif %}
+
+            {% if derivatives1 or derivatives2 %}
+                {% if derivativeslen == 1 %}
+                    <h4>Derivative:</h4>
+                {% else %}
+                    <h4>Derivatives:</h4>
+                {% endif %}
+                {% for derivative in derivatives1 %}
+                        <p><strong>{{ derivative.language }}</strong> <a href="{% url 'entry' entry_id=derivative.id %}">{{ derivative.entry }}</a>{% if derivative.latinized_name and derivative.latinized_name != derivative.entry %} {{ derivative.latinized_name }}{% endif %}</p>
+                {% endfor %}
+                {% for derivative in derivatives2 %}
+                        <p><strong>{{ derivative.language }}</strong> <a href="{% url 'entry' entry_id=derivative.id %}">{{ derivative.entry }}</a>{% if derivative.latinized_name and derivative.latinized_name != derivative.entry %} {{ derivative.latinized_name }}{% endif %}</p>
+                {% endfor %}
+            {% endif %}   
+        </div>
+        <div class="col wik">
+            {% for e in zip %}
+                {% if e.etymology or e.definitions %}
+                    {% if n > 1 %}
+                        <h4>Etymology {{ e.number }}:</h4>
+                    {% elif n == 1 and e.etymology %}
+                        <h4>Etymology:</h4>
+                    {% endif %}
+                    {% if e.etymology %}<p>{{ e.etymology | safe }}</p>{% endif %}
+                    {% if e.definitions %}
+                        <h4>Definitions:</h4>
+                        <p>
+                            {% for d in e.definitions %}
+                                <p>{{ d.partOfSpeech }}</p>
+                                <p>{{ d.text }}</p>
+                                <p>{{ d.definitions | safe }}</p>
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
